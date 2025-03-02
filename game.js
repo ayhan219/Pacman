@@ -12,7 +12,7 @@ const DIRECTION_RIGHT = 4;
 const DIRECTION_UP = 3;
 const DIRECTION_LEFT = 2;
 const DIRECTION_BOTTOM = 1;
-let lives = 3;
+let lives = 1;
 let ghostCount = 4;
 let ghostImageLocations = [
   { x: 0, y: 0 },
@@ -174,6 +174,11 @@ let isGameOver = () => {
       canvas.width / 2 - 100,
       canvas.height / 2
     );
+    document.getElementById("restartButton").style.display = "block";
+    document.getElementById("restartButton").addEventListener("click", () => {
+      window.location.reload();
+    });
+
     return true; // Return true to indicate the game is over
   }
   return false;
