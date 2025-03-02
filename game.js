@@ -21,7 +21,6 @@ let ghostImageLocations = [
   { x: 176, y: 121 },
 ];
 
-// Game variables
 let fps = 30;
 let pacman;
 let oneBlockSize = 20;
@@ -182,7 +181,7 @@ let draw = () => {
     canvas.height/2, 
     500
   );
-  gradient.addColorStop(0, "#000066");
+  gradient.addColorStop(0, "#000069");
   gradient.addColorStop(0.5, "#000033");
   gradient.addColorStop(1, backgroundColor);
   canvasContext.fillStyle = gradient;
@@ -278,16 +277,12 @@ window.addEventListener("keydown", (event) => {
   let k = event.keyCode;
   setTimeout(() => {
     if (k == 37 || k == 65) {
-      // left arrow or a
       pacman.nextDirection = DIRECTION_LEFT;
     } else if (k == 38 || k == 87) {
-      // up arrow or w
       pacman.nextDirection = DIRECTION_UP;
     } else if (k == 39 || k == 68) {
-      // right arrow or d
       pacman.nextDirection = DIRECTION_RIGHT;
     } else if (k == 40 || k == 83) {
-      // bottom arrow or s
       pacman.nextDirection = DIRECTION_BOTTOM;
     }
   }, 1);
