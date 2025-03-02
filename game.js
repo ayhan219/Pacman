@@ -58,7 +58,7 @@ let map = [
   [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
   [1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1],
   [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
 let randomTargetsForGhosts = [
@@ -67,9 +67,8 @@ let randomTargetsForGhosts = [
   { x: 10 * oneBlockSize, y: 8 * oneBlockSize },
   { x: 10 * oneBlockSize, y: 12 * oneBlockSize },
   { x: 0, y: 10 * oneBlockSize },
-  { x: (map[0].length - 1) * oneBlockSize, y: 10 * oneBlockSize }
+  { x: (map[0].length - 1) * oneBlockSize, y: 10 * oneBlockSize },
 ];
-
 
 let createNewPacman = () => {
   pacman = new Pacman(
@@ -83,6 +82,7 @@ let createNewPacman = () => {
 
 let gameLoop = () => {
   update();
+  if (isGameOver()) return; // Stop the game if it's over
   draw();
 };
 
@@ -130,8 +130,6 @@ let drawFoods = () => {
 };
 
 let drawRemainingLives = () => {
-
-  
   canvasContext.font = "bold 24px Arial";
   canvasContext.fillStyle = livesColor;
   canvasContext.strokeStyle = "#000";
@@ -158,8 +156,30 @@ let drawRemainingLives = () => {
   }
 };
 
+let isGameOver = () => {
+  if (lives === 0) {
+    clearInterval(gameInterval); // Stop the game loop
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+    canvasContext.font = "bold 24px Arial";
+    canvasContext.fillStyle = "#FF0000";
+    canvasContext.strokeStyle = "#000";
+    canvasContext.lineWidth = 2;
+    canvasContext.strokeText(
+      "GAME OVER",
+      canvas.width / 2 - 100,
+      canvas.height / 2
+    );
+    canvasContext.fillText(
+      "GAME OVER",
+      canvas.width / 2 - 100,
+      canvas.height / 2
+    );
+    return true; // Return true to indicate the game is over
+  }
+  return false;
+};
+
 let drawScore = () => {
-  
   canvasContext.font = "bold 24px Arial";
   canvasContext.fillStyle = scoreColor;
   canvasContext.strokeStyle = "#000";
@@ -171,14 +191,14 @@ let drawScore = () => {
 
 let draw = () => {
   canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-  
+
   let time = Date.now() / 2000;
   let gradient = canvasContext.createRadialGradient(
-    canvas.width/2 + Math.cos(time) * 50, 
-    canvas.height/2 + Math.sin(time) * 50, 
+    canvas.width / 2 + Math.cos(time) * 50,
+    canvas.height / 2 + Math.sin(time) * 50,
     50,
-    canvas.width/2, 
-    canvas.height/2, 
+    canvas.width / 2,
+    canvas.height / 2,
     500
   );
   gradient.addColorStop(0, "#000069");
@@ -186,7 +206,7 @@ let draw = () => {
   gradient.addColorStop(1, backgroundColor);
   canvasContext.fillStyle = gradient;
   canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-  
+
   drawWalls();
   drawFoods();
   drawGhosts();
